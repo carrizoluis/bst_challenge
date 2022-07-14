@@ -127,6 +127,7 @@ export class BinaryTreeService {
   async deeper(): Promise<ReturnValueResponseDTO> {
     try{
 
+        // IT ISN'T FINISHED
         if (!this.binaryTree) {
             throw new BadRequestException(
               `Binary tree doesn't exists, first create one`,
@@ -138,6 +139,8 @@ export class BinaryTreeService {
                 `Binary tree doesn't have values, insert one`,
               ); 
         }
+
+        this.binaryTree.inOrderTraversal(this.binaryTree.root);
 
         return null;
 

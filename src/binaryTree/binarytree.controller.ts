@@ -3,12 +3,9 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
   Logger,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import {
     ApiBadRequestResponse,
@@ -68,7 +65,7 @@ export class BinaryTreeController {
   }
 
   @ApiOperation({
-    description: 'Operation which returns the deeper value in the tree.',
+    description: 'Operation which returns the deeper value in the tree. (NOT FINISHED)',
   })
   @ApiOkResponse({ type: ReturnValueResponseDTO, description: 'Value and depth' })
   @ApiBadRequestResponse({ type: BadRequestException, description: 'When the tree doesn\'t exist' })
