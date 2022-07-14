@@ -1,4 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { isEmpty } from 'lodash';
 import { BinarySearchTree } from './binaryEntity/binarytree.entity';
 import {
   CreateBinaryTreeResponseDTO,
@@ -9,50 +10,77 @@ import {
 
 @Injectable()
 export class BinaryTreeService {
-  
   private binaryTree: BinarySearchTree<Number>;
   private logger: Logger;
 
   constructor() {
-
     this.logger = new Logger(BinaryTreeService.name);
-
   }
 
   /** It initializes the tree with an array of numbers.
    *
    */
   async create(numbers?: Number[]): Promise<CreateBinaryTreeResponseDTO> {
-    
-    this.logger.debug(`Binary tree creation request ${numbers}`)
+    try {
+      this.logger.debug(
+        `Binary tree creation request ${numbers ? numbers : ''}`,
+      );
 
-    if(numbers.length <= 0){
+      if (isEmpty(numbers)) {
         this.binaryTree = new BinarySearchTree(this.comparator);
-    }else{
+      } else {
         this.binaryTree = new BinarySearchTree(this.comparator);
 
-        numbers.forEach(n => {
-            this.binaryTree.insert(n);
+        numbers.forEach((n) => {
+          this.binaryTree.insert(n);
         });
-    } 
+      }
 
-    const response: CreateBinaryTreeResponseDTO = {
+      const response: CreateBinaryTreeResponseDTO = {
         status: 'OK',
-        values: numbers
+        values: numbers,
+      };
+
+      this.logger.log(`Binary tree created: ${JSON.stringify(response)}`);
+
+      return response;
+    } catch (e) {
+      this.logger.error(JSON.stringify(e));
+
+      throw e;
     }
-
-    this.logger.log(`Binary tree created: ${JSON.stringify(response)}`)
-    
-
-    return response;
   }
 
-  /** Insert a number into the tree.
+  /** It Inserts a number into the tree. If the binary tree doesn't exists then it returns an error.
    *
-   * @param number
+   * @param number DTO with a value.
+   * @Returns DTO with the Inserted Value
    */
   async insert(number: InsertValueRequestDTO): Promise<InserValueResponseDTO> {
-    return null;
+    try {
+      this.logger.debug(`Binary insertion value request: ${number}`);
+
+      if (!this.binaryTree) {
+        throw new BadRequestException(
+          `Binary tree doesn't exists, first create one.`,
+        );
+      }
+
+      this.binaryTree.insert(number.value);
+
+      const response: InserValueResponseDTO = {
+        value: number.value,
+      };
+
+      this.logger.log(
+        `Value successfuly inserted: ${JSON.stringify(response)}`,
+      );
+
+      return response;
+    } catch (e) {
+      this.logger.error(JSON.stringify(e));
+      throw e;
+    }
   }
 
   /** This method returns a requested value. It searchs in the tree.
@@ -61,7 +89,35 @@ export class BinaryTreeService {
    * @returns String with value and depth.
    */
   async search(value: number): Promise<ReturnValueResponseDTO> {
-    return null;
+    try {
+      this.logger.debug(`Search request: ${value}`);
+
+      if (!this.binaryTree) {
+        throw new BadRequestException(
+          `Binary tree doesn't exists, first create one`,
+        );
+      }
+
+      const element: Number = this.binaryTree.search(value).data;
+
+      if (!element) {
+        this.logger.log(`No elements found`);
+
+        return null;
+      }
+
+      const response: ReturnValueResponseDTO = {
+        value: element,
+        depth: 0,
+      };
+
+      this.logger.log(`Element found: ${JSON.stringify(response)}`);
+
+      return response;
+    } catch (e) {
+      this.logger.error(JSON.stringify(e));
+      throw e;
+    }
   }
 
   /** This method returns the deeper node
@@ -74,9 +130,9 @@ export class BinaryTreeService {
 
   private comparator(a: number, b: number) {
     if (a < b) return -1;
-  
+
     if (a > b) return 1;
-  
+
     return 0;
   }
 }

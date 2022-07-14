@@ -1,10 +1,12 @@
+import { Optional } from "@nestjs/common";
 import {  ApiProperty } from "@nestjs/swagger";
-import {  IsNumber } from "class-validator";
+import {  IsNumber, IsOptional } from "class-validator";
 
 
 export class CreateBinaryTreeRequestDTO {
     
     @ApiProperty()
+    @IsOptional()
     @IsNumber({},{each: true})
     values: Number[];
 }
@@ -36,9 +38,9 @@ export class InserValueResponseDTO {
 export class ReturnValueResponseDTO{
 
     @ApiProperty()
-    value: number;
+    value: Number;
 
     @ApiProperty()
-    depth: number;
+    depth: Number;
 
 }

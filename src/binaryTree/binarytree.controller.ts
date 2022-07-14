@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
   Body,
   Controller,
   Get,
@@ -10,6 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import {
+    ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
@@ -32,10 +34,10 @@ export class BinaryTreeController {
   }
 
   @ApiOperation({
-    description: 'Operation which initializes a binary tree in memory.',
+    description: 'Operation which creates a binary tree in memory.',
   })
   @ApiCreatedResponse({ type: CreateBinaryTreeResponseDTO })
-  @Post('/initialize')
+  @Post('/new')
   async createBinaryTree(
     @Body() body?: CreateBinaryTreeRequestDTO,
   ): Promise<CreateBinaryTreeResponseDTO> {
@@ -43,9 +45,10 @@ export class BinaryTreeController {
   }
 
   @ApiOperation({
-    description: 'Operation which inserts a value in a binary tree.',
+    description: 'Operation which inserts a value into an existent binary tree.',
   })
-  @ApiOkResponse({ type: InserValueResponseDTO })
+  @ApiCreatedResponse({ type: InserValueResponseDTO })
+  @ApiBadRequestResponse({type: BadRequestException, description: 'It means that the binarytree doesn\'t exists'})
   @Post('')
   async insertValue(
     @Body() value: InsertValueRequestDTO,

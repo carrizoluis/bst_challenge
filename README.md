@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Binary Tree Search Project Challenge. It contains the basic operations on a binary tree: Creation, Insertion, Search and deepth.
 
 ## Installation
 
