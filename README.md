@@ -25,6 +25,13 @@
 ## Description
 
 Binary Tree Search Project Challenge. It contains the basic operations on a binary tree: Creation, Insertion, Search and deepth.
+The application runs in port 3000.
+
+## Swagger
+http://localhost:3000/document
+
+## BinaryTree API
+http://localhost:3000/binarytree
 
 ## Installation
 
