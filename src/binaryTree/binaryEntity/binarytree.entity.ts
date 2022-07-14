@@ -1,10 +1,12 @@
 export class BinarySearchTreeNode<T> {
   data: T;
+  depth: number;
   leftNode?: BinarySearchTreeNode<T>;
   rightNode?: BinarySearchTreeNode<T>;
 
   constructor(data: T) {
     this.data = data;
+    this.depth = 0;
   }
 }
 
@@ -25,6 +27,7 @@ export class BinarySearchTree<T> {
     let current = this.root;
 
     while (true) {
+      current.depth = current.depth + 1;
       if (this.comparator(data, current.data) === 1) {
         if (current.rightNode) {
           current = current.rightNode;
@@ -47,7 +50,7 @@ export class BinarySearchTree<T> {
     if (!this.root) return undefined;
 
     let current = this.root;
-
+    
     while (this.comparator(data, current.data) !== 0) {
       if (this.comparator(data, current.data) === 1) {
         if (!current.rightNode) return;

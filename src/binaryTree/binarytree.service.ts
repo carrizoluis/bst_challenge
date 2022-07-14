@@ -98,7 +98,7 @@ export class BinaryTreeService {
         );
       }
 
-      const element: Number = this.binaryTree.search(value).data;
+      const element = this.binaryTree.search(value);
 
       if (!element) {
         this.logger.log(`No elements found`);
@@ -107,8 +107,8 @@ export class BinaryTreeService {
       }
 
       const response: ReturnValueResponseDTO = {
-        value: element,
-        depth: 0,
+        value: element.data,
+        depth: element.depth,
       };
 
       this.logger.log(`Element found: ${JSON.stringify(response)}`);
@@ -125,7 +125,26 @@ export class BinaryTreeService {
    * @returns String with the value and the depht.
    */
   async deeper(): Promise<ReturnValueResponseDTO> {
-    return null;
+    try{
+
+        if (!this.binaryTree) {
+            throw new BadRequestException(
+              `Binary tree doesn't exists, first create one`,
+            );
+        }
+
+        if(!this.binaryTree.root){
+            throw new BadRequestException(
+                `Binary tree doesn't have values, insert one`,
+              ); 
+        }
+
+        return null;
+
+    }catch(e){
+        this.logger.error(JSON.stringify(e));
+        throw e;
+    }
   }
 
   private comparator(a: number, b: number) {

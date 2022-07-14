@@ -70,8 +70,10 @@ export class BinaryTreeController {
   @ApiOperation({
     description: 'Operation which returns the deeper value in the tree.',
   })
-  @ApiOkResponse({ type: ReturnValueResponseDTO })
-  @Get('/deeper')
+  @ApiOkResponse({ type: ReturnValueResponseDTO, description: 'Value and depth' })
+  @ApiBadRequestResponse({ type: BadRequestException, description: 'When the tree doesn\'t exist' })
+  @ApiBadRequestResponse({ type: BadRequestException, description: 'When the tree doesn\'t have values'})
+  @Get('/depth')
   async getDeeperValue(): Promise<ReturnValueResponseDTO> {
     return await this.binaryService.deeper();
   }
