@@ -82,11 +82,10 @@ export class BinarySearchTree<T> {
 
       //Walk Right Side Right Node
       let currentRightSide = this.root.rightNode;
-      let depthRightR = 0;
+      let depthRightR = 1;
       let depthRightRNode: BinarySearchTreeNode<T>;
       while(currentRightSide){
-        depthRightR = depthRightR + 1;
-
+        
         if(!currentRightSide.rightNode) {
           
           depthRightRNode = currentRightSide;
@@ -97,16 +96,17 @@ export class BinarySearchTree<T> {
           break;
         }
 
+        depthRightR = depthRightR + 1;
+
         currentRightSide = currentRightSide.rightNode;
       }
 
       //WALK Left Side Right Node
-      let currentRLeftSide = this.root.leftNode;
-      let depthRightL = 0;
+      let currentRLeftSide = this.root.rightNode.leftNode;
+      let depthRightL = 2;
       let depthRightLNode: BinarySearchTreeNode<T>;
 
       while(currentRLeftSide) {
-        depthRightL = depthRightL + 1;
 
         if(!currentRLeftSide.leftNode) {
 
@@ -118,6 +118,8 @@ export class BinarySearchTree<T> {
           break;
         };
 
+        depthRightL = depthRightL + 1;
+
         currentRLeftSide = currentRLeftSide.leftNode;
       }
     }
@@ -126,11 +128,10 @@ export class BinarySearchTree<T> {
     if(this.root.leftNode){
 
       //Walk Left Side Left Node
-      let currentLLeftSide = this.root.rightNode;
-      let depthLeftR = 0;
+      let currentLLeftSide = this.root.leftNode;
+      let depthLeftR = 1;
       let depthLeftRNode: BinarySearchTreeNode<T>;
       while(currentLLeftSide){
-        depthLeftR = depthLeftR + 1;
 
         if(!currentLLeftSide.leftNode) {
           
@@ -142,16 +143,17 @@ export class BinarySearchTree<T> {
           break;
         }
 
+        depthLeftR = depthLeftR + 1;
+
         currentLLeftSide = currentLLeftSide.leftNode;
       }
 
       //WALK Left Side Right Node
-      let currentLeftSideRightNode = this.root.rightNode;
-      let depthLeftSideRNode = 0;
+      let currentLeftSideRightNode = this.root.leftNode.rightNode;
+      let depthLeftSideRNode = 2;
       let leftSideRNode: BinarySearchTreeNode<T>;
 
       while(currentLeftSideRightNode) {
-        depthLeftSideRNode = depthLeftSideRNode + 1;
 
         if(!currentLeftSideRightNode.rightNode) {
 
@@ -163,10 +165,14 @@ export class BinarySearchTree<T> {
           break;
         };
 
+        depthLeftSideRNode = depthLeftSideRNode + 1;
+
         currentLeftSideRightNode = currentLeftSideRightNode.rightNode;
       }
 
-    }else{
+    } 
+    
+    if(!this.root.leftNode && !this.root.rightNode){
       //IF TREE DOESN'T HAVE LEFT AND RIGHT NODE.
       const rootNode: BinarySearchTreeNode<T> = {
         data: this.root.data,
@@ -174,12 +180,16 @@ export class BinarySearchTree<T> {
       }
     
       resultNodes.push(this.root);
+
+      return resultNodes;
     }
 
     //WE ORDER THE ARRAY FROM MAJOR TO MINOR
-    let majorToMinor: BinarySearchTreeNode<T>[] = orderBy(resultNodes, 'desc');
+    let majorToMinor: BinarySearchTreeNode<T>[] = orderBy(resultNodes, ['depth'],'desc');
 
-    resultNodes = majorToMinor.filter(node => {node.depth === first(majorToMinor).depth});
+    const firstElement: BinarySearchTreeNode<T> = first(majorToMinor);
+
+    resultNodes = majorToMinor.filter(node => {return node.depth >= firstElement.depth});
 
     return resultNodes;
   }  
