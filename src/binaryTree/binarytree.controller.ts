@@ -39,7 +39,7 @@ export class BinaryTreeController {
   async createBinaryTree(
     @Body() body?: CreateBinaryTreeRequestDTO,
   ): Promise<CreateBinaryTreeResponseDTO> {
-    return await this.binaryService.create(body.values);
+    return await this.binaryService.create(body?.values);
   }
 
   @ApiOperation({
@@ -73,6 +73,6 @@ export class BinaryTreeController {
   @ApiBadRequestResponse({ type: BadRequestException, description: 'When the tree doesn\'t have values'})
   @Get('/depth')
   async getDeeperValue(): Promise<ReturnDeepestValuesResponseDTO> {
-    return await this.binaryService.deeper();
+    return await this.binaryService.deepest();
   }
 }

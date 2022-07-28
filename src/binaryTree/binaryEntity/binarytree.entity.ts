@@ -27,17 +27,19 @@ export class BinarySearchTree<T> {
     }
 
     let current = this.root;
-
+    let depth = 0;
     while (true) {
-      current.depth = current.depth + 1;
       if (this.comparator(data, current.data) === 1) {
+        depth = depth + 1;
         if (current.rightNode) {
           current = current.rightNode;
         } else {
           current.rightNode = new BinarySearchTreeNode(data);
+          current.rightNode.depth = depth;
           return current.rightNode;
         }
       } else {
+        depth = depth + 1;
         if (current.leftNode) {
           current = current.leftNode;
         } else {

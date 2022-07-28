@@ -125,7 +125,7 @@ export class BinaryTreeService {
    *
    * @returns String with the value and the depht.
    */
-  async deeper(): Promise<ReturnDeepestValuesResponseDTO> {
+  async deepest(): Promise<ReturnDeepestValuesResponseDTO> {
     try{
 
       if(!this.binaryTree){
