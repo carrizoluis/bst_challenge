@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { isEmpty } from 'lodash';
-import { BinarySearchTree } from './binaryEntity/binarytree.entity';
+import { BinarySearchTree, BinarySearchTreeNode } from './binaryEntity/binarytree.entity';
 import {
   CreateBinaryTreeResponseDTO,
   InsertValueRequestDTO,
   InserValueResponseDTO,
+  ReturnDeepestValuesResponseDTO,
   ReturnValueResponseDTO,
 } from './dto/binarytree.dto';
 
@@ -124,25 +125,23 @@ export class BinaryTreeService {
    *
    * @returns String with the value and the depht.
    */
-  async deeper(): Promise<ReturnValueResponseDTO> {
+  async deeper(): Promise<ReturnDeepestValuesResponseDTO> {
     try{
 
-        // IT ISN'T FINISHED
-        if (!this.binaryTree) {
-            throw new BadRequestException(
-              `Binary tree doesn't exists, first create one`,
-            );
+        const deeperNodes: BinarySearchTreeNode<Number>[] = this.binaryTree.deeperNodes();
+
+        if(!deeperNodes){
+          throw new BadRequestException(`Binary tree doesn't exists, first create one`);
         }
 
-        if(!this.binaryTree.root){
-            throw new BadRequestException(
-                `Binary tree doesn't have values, insert one`,
-              ); 
+        const values: Number[] = deeperNodes.map(node => {return node.data});
+
+        const depth = deeperNodes[0].depth;
+
+        return {
+          deepest: values,
+          depth: depth
         }
-
-        this.binaryTree.inOrderTraversal(this.binaryTree.root);
-
-        return null;
 
     }catch(e){
         this.logger.error(JSON.stringify(e));

@@ -44,3 +44,11 @@ export class ReturnValueResponseDTO{
     depth: Number;
 
 }
+
+export class ReturnDeepestValuesResponseDTO {
+    @ApiProperty()
+    deepest: Number[];
+
+    @ApiProperty()
+    depth: Number;
+}
