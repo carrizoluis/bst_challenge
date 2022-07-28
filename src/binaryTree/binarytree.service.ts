@@ -128,11 +128,15 @@ export class BinaryTreeService {
   async deeper(): Promise<ReturnDeepestValuesResponseDTO> {
     try{
 
-        const deeperNodes: BinarySearchTreeNode<Number>[] = this.binaryTree.deeperNodes();
+      if(!this.binaryTree){
+        throw new BadRequestException(`Binary tree doesn't exists, first create one`);
+      }
 
-        if(!deeperNodes){
-          throw new BadRequestException(`Binary tree doesn't exists, first create one`);
-        }
+      const deeperNodes: BinarySearchTreeNode<Number>[] = this.binaryTree.deeperNodes();
+
+      if(!deeperNodes){
+        throw new BadRequestException(`Binary tree doesn't have elements, insert one`);
+      }
 
         const values: Number[] = deeperNodes.map(node => {return node.data});
 

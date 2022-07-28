@@ -73,7 +73,7 @@ export class BinarySearchTree<T> {
    * @returns Array of BinarySearchTreeNode
    */
   deeperNodes(): BinarySearchTreeNode<T>[] {
-    if(!this.root) return undefined;
+    if(!this.root) return null;
 
     let resultNodes: BinarySearchTreeNode<T>[] = [];
     
